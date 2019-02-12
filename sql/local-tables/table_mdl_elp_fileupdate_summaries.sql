@@ -1,0 +1,21 @@
+CREATE TABLE `mdl_elp_fileupdate_summaries` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `yearmonth` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `filekey` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fileref` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `scorm_created` bigint(10) NOT NULL,
+  `scorm_updated` bigint(10) NOT NULL,
+  `scorm_filesize` bigint(10) NOT NULL,
+  `scorm_prevsize` bigint(10) NOT NULL,
+  `pptx_created` bigint(10) NOT NULL,
+  `pptx_updated` bigint(10) NOT NULL,
+  `pptx_filesize` bigint(10) NOT NULL,
+  `pptx_prevsize` bigint(10) NOT NULL,
+  `pdf_created` bigint(10) NOT NULL,
+  `pdf_updated` bigint(10) NOT NULL,
+  `pdf_filesize` bigint(10) NOT NULL,
+  `pdf_prevsize` bigint(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `yearMonth` (`yearmonth`),
+  KEY `preskey` (`filekey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;

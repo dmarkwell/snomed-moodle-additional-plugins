@@ -1,0 +1,8 @@
+DROP FUNCTION IF EXISTS `MoodleStamp`;;
+CREATE FUNCTION `MoodleStamp`() RETURNS varchar(255) CHARSET latin1
+RETURN CONCAT('elearning.ihtsdotools.org+',DATE_FORMAT(now(),'%y%m%d%H%i%s'),'+',CHAR(FLOOR(RAND()*26)+IF(RAND()>=.5,97,65))
+,CHAR(FLOOR(RAND()*26)+IF(RAND()>=.5,97,65)),CHAR(FLOOR(RAND()*26)+IF(RAND()>=.5,97,65)),
+CHAR(FLOOR(RAND()*26)+IF(RAND()>=.5,97,65)),
+CHAR(FLOOR(RAND()*26)+IF(RAND()>=.5,97,65)),
+CHAR(FLOOR(RAND()*26)+
+IF(RAND()>=.5,97,65)));;
