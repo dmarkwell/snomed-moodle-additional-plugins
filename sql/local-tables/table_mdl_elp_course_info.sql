@@ -1,0 +1,22 @@
+CREATE TABLE `mdl_elp_course_info` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `course_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `course_id` bigint(10) NOT NULL DEFAULT 0,
+  `section_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `section_id` bigint(10) NOT NULL DEFAULT 0,
+  `section_order` int(6) NOT NULL DEFAULT 0,
+  `row_type` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subsection_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subsection_id` bigint(10) NOT NULL DEFAULT 0,
+  `subsection_order` int(6) NOT NULL DEFAULT 0,
+  `module_title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module_id` bigint(10) NOT NULL DEFAULT 0,
+  `module_type` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module_order` int(6) NOT NULL DEFAULT 0,
+  `instance_id` bigint(10) NOT NULL DEFAULT 0,
+  `indent` int(6) NOT NULL DEFAULT 0,
+  `visible` tinyint(1) NOT NULL,
+  `html` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fullkey` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;

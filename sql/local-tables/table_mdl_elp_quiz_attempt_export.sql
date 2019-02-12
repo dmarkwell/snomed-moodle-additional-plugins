@@ -1,0 +1,20 @@
+CREATE TABLE `mdl_elp_quiz_attempt_export` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `attemptid` bigint(10) NOT NULL,
+  `quiz` bigint(10) DEFAULT NULL,
+  `userid` bigint(10) DEFAULT NULL,
+  `attempt` mediumint(6) DEFAULT NULL,
+  `slot` bigint(10) DEFAULT NULL,
+  `questionid` bigint(10) DEFAULT NULL,
+  `answer` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `seq` bigint(10) DEFAULT 0,
+  `maxmark` decimal(12,7) DEFAULT 0.0000000,
+  `fraction` decimal(12,7) DEFAULT NULL,
+  `flag` smallint(6) DEFAULT 0,
+  `attempttime` bigint(10) DEFAULT NULL,
+  `timemodified` bigint(10) DEFAULT NULL,
+  `attemptstate` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `group` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `attemptid` (`attemptid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

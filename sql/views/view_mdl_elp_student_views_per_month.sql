@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS mdl_elp_student_views_per_month;
+CREATE VIEW `mdl_elp_student_views_per_month` AS select `mdl_elp_scorm_track`.`userid` AS `userid`,`getMonthNumber`(`mdl_elp_scorm_track`.`modified`) AS `monthnumber`,count(`mdl_elp_scorm_track`.`refid`) AS `presentation count` from `mdl_elp_scorm_track` group by `mdl_elp_scorm_track`.`userid`,`getMonthNumber`(`mdl_elp_scorm_track`.`modified`);
