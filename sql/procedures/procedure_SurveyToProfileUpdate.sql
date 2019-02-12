@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `SurveyToProfileUpdate`;;
 CREATE PROCEDURE `SurveyToProfileUpdate`(IN `p_startDate` varchar(12))
 BEGIN

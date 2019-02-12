@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `getMonthNumber`;;
 CREATE FUNCTION `getMonthNumber`(`p_unixtime` bigint(10)) RETURNS int(5)
 begin

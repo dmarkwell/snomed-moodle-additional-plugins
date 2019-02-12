@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `CommunicationPreferenceUpdate`;;
 CREATE PROCEDURE `CommunicationPreferenceUpdate`(IN `p_startDate` varchar(10) CHARACTER SET 'utf8mb4')
 BEGIN

@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `QuestionsToQuiz`;;
 CREATE PROCEDURE `QuestionsToQuiz`(IN `p_quizid` bigint(10), IN `p_quiz_categoryid` bigint(10), IN `p_added` bigint(10))
 proc: BEGIN

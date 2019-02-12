@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `PresentationHistoryReport`;;
 CREATE PROCEDURE `PresentationHistoryReport`(IN `p_period` varchar(6))
 BEGIN

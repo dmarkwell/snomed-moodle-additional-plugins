@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `DeleteOrphanActivities`;;
 CREATE PROCEDURE `DeleteOrphanActivities`()
 begin

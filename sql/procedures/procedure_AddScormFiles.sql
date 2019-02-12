@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `AddScormFiles`;;
 CREATE PROCEDURE `AddScormFiles`(IN `i_module_id` bigint(10))
 proc:begin

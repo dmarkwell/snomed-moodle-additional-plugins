@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `AddedAttemptsRegrade`;;
 CREATE PROCEDURE `AddedAttemptsRegrade`(IN `p_quizid` bigint)
 begin

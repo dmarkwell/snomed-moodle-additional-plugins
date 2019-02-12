@@ -1,4 +1,5 @@
-DROP PROCEDURE IF EXISTS `UpdateMetadata`;;
+DELIMITER ;;
+DROP PROCEDURE IF EXISTS `UpdateMetadata` ;;
 CREATE PROCEDURE `UpdateMetadata`()
 begin
 
@@ -14,7 +15,7 @@ SET v_SVR=(SELECT `value` FROM `mdl_elp_lookup` WHERE `group`='meta_info' AND `i
 UPDATE `mdl_page` `p`, `mdl_elp_metadata` `t`,`mdl_course_modules` `m`, `mdl_course_sections` `s`
 SET 
 `p`.`name`=`t`.`title`,
-`p`.`content`= REPLACE(REPLACE(REPLACE(`t`.`metadata`,"$VID$",v_VID),"$SVR$",v_SVR),"$PDF$",v_PDF),
+`p`.`content`= REPLACE(REPLACE(REPLACE(REPLACE(`t`.`metadata`,"$VID$",v_VID),"$SVR$",v_SVR),"$PDF$",v_PDF),"$CMID$",`m`.`id`),
 `p`.`displayoptions`='a:2:{s:12:"printheading";s:1:"0";s:10:"printintro";s:1:"0";}',
 `p`.`timemodified`=unix_timestamp(),
 `m`.`completion`=2,

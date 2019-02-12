@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `UpdatePublicMetadataPages`;;
 CREATE PROCEDURE `UpdatePublicMetadataPages`()
 BEGIN

@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'tool_uploadmetadata';
-$plugin->version   = 2018128700;        // The current module version (Date: YYYYMMDDXX)
+$plugin->version   = 2019011200;        // The current module version (Date: YYYYMMDDXX)
 $plugin->requires  = 2017051200;
-$plugin->release   = '1.1.1';
+$plugin->release   = '1.1.2';
 $plugin->maturity  = MATURITY_STABLE;

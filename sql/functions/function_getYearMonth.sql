@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `getYearMonth`;;
 CREATE FUNCTION `getYearMonth`(`p_monthnumber` int(5)) RETURNS char(6) CHARSET latin1
 begin

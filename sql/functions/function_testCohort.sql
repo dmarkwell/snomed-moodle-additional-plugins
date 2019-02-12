@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `testCohort`;;
 CREATE FUNCTION `testCohort`(`p_userid` bigint(10), `p_regex` varchar(64), `p_prefix` varchar(12)) RETURNS tinyint(1)
 begin

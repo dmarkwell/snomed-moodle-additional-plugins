@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `getYearQuarter`;;
 CREATE FUNCTION `getYearQuarter`(`p_unixtime` bigint(10)) RETURNS char(6) CHARSET latin1
 begin

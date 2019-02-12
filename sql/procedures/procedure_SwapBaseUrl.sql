@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `SwapBaseUrl`;;
 CREATE PROCEDURE `SwapBaseUrl`(IN `ChangeTo_uat_or_prod` varchar(4))
 SWAPBASE: BEGIN

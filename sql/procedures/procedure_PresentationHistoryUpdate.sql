@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `PresentationHistoryUpdate`;;
 CREATE PROCEDURE `PresentationHistoryUpdate`(IN `p_resetStartYear` varchar(6) CHARACTER SET 'utf8mb4')
 begin

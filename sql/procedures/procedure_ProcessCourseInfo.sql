@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `ProcessCourseInfo`;;
 CREATE PROCEDURE `ProcessCourseInfo`(IN `p_course_title` varchar(255))
 ADDINFO: BEGIN

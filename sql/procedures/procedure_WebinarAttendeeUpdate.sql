@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `WebinarAttendeeUpdate`;;
 CREATE PROCEDURE `WebinarAttendeeUpdate`(IN `p_modified_after` varchar(10))
 BEGIN

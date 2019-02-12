@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `getIntakeCohort`;;
 CREATE FUNCTION `getIntakeCohort`(`p_userid` bigint(10), `p_courseid` bigint(10)) RETURNS varchar(32) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci
 begin

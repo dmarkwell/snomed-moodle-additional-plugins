@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `ScormCompletionUpdate`;;
 CREATE PROCEDURE `ScormCompletionUpdate`(IN `p_option` varchar(6) CHARACTER SET 'utf8mb4')
 proc:begin

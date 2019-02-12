@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `ClearStudentCourseProgress`;;
 CREATE PROCEDURE `ClearStudentCourseProgress`(IN `p_courseid` bigint(10), IN `p_userid` bigint(10), IN `p_added` bigint(10))
 CLEARPROGRESS: BEGIN

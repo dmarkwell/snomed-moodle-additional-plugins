@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `AddAttemptResult`;;
 CREATE PROCEDURE `AddAttemptResult`(IN `attemptid` bigint(10), IN `seqnum` bigint(10), IN `maxmark` decimal(12,7), IN `mark` decimal(12,7))
 begin

@@ -25,4 +25,8 @@ All notable changes to this project will be documented in this file.
 ### Updated
 - Minor update.
 - Added mode=update parameter to index form to trigger UpdateMetadata() to run.
-- This is useful when needing to apply metadata to newly added instances of a presentation or video. 
+- This is useful when needing to apply metadata to newly added instances of a presentation or video.
+
+## [1.1.2] - 2019-02-11
+### Updated
+- Add support for new videopopup which require coursemoduleid $CMID$ to be substituted.

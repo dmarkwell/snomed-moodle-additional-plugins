@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `testGroupDeadline`;;
 CREATE FUNCTION `testGroupDeadline`(`p_userid` bigint(10), `p_courseid` bigint(10)) RETURNS text CHARSET utf8mb4
 proc:begin

@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `getCourseGroup`;;
 CREATE FUNCTION `getCourseGroup`(`p_userid` bigint(10), `p_courseid` bigint(10),`p_idnum_regex` text) RETURNS varchar(32) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci
 begin

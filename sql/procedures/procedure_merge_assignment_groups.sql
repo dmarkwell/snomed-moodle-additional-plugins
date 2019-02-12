@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `merge_assignment_groups`;;
 CREATE PROCEDURE `merge_assignment_groups`(IN `course_shortname` varchar(255), IN `groupname_source` varchar(255), IN `groupname_target` varchar(255))
 proc: begin

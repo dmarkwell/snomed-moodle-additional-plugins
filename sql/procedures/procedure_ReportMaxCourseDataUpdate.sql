@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `ReportMaxCourseDataUpdate`;;
 CREATE PROCEDURE `ReportMaxCourseDataUpdate`()
 BEGIN

@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `QuizAttemptExport`;;
 CREATE PROCEDURE `QuizAttemptExport`(IN `p_option` varchar(12) CHARACTER SET 'utf8mb4')
 BEGIN

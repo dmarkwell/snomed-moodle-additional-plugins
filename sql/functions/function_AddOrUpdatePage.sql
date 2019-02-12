@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP FUNCTION IF EXISTS `AddOrUpdatePage`;;
 CREATE FUNCTION `AddOrUpdatePage`(`p_id` bigint(10), `p_course_id` bigint(10), `p_section_id` bigint(10), `p_key` varchar(100), `p_html` longtext, `p_visible` tinyint(1), `p_indent` smallint(3), `p_name` varchar(255)) RETURNS bigint(10)
 NEWPAGE: BEGIN

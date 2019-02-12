@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `ReportMaxBaseDataUpdate`;;
 CREATE PROCEDURE `ReportMaxBaseDataUpdate`()
 BEGIN

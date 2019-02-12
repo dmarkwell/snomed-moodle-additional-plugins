@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `UpdatePresentationIndex`;;
 CREATE PROCEDURE `UpdatePresentationIndex`()
 BEGIN

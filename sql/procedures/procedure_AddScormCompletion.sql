@@ -1,41 +1,18 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `AddScormCompletion`;;
 CREATE PROCEDURE `AddScormCompletion`(IN `p_presref` varchar(255), IN `p_coursename` varchar(255), IN `p_users` longtext)
 PROC: begin
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
 DECLARE v_presrefid bigint(10);
 DECLARE v_moduleid bigint(10);
 DECLARE v_scormid bigint(10);
 DECLARE v_scoid bigint(10);
 DECLARE v_course bigint(10);
 
-
-
 IF p_presref not rlike '^ELP[0-9]{4}[a-z]{0,3}_' THEN
    SELECT 'ERROR: No matching presentation. NOTE: p_presref must match regular expression with ELP[0-9]{4}[a-z]{0,3}_.* (e.g ELP0001_)';
    LEAVE PROC;
 END IF;
-
 
 SET v_presrefid=(SELECT `id` FROM `mdl_elp_scorm_ref` WHERE `reference` rlike CONCAT('^',`p_presref`));
 SET v_course=(SELECT `id` FROM `mdl_course` WHERE `shortname`=`p_coursename`);

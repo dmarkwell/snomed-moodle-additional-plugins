@@ -1,3 +1,4 @@
+DELIMITER ;;
 DROP PROCEDURE IF EXISTS `FixUrlHttps`;;
 CREATE PROCEDURE `FixUrlHttps`(IN `uat_or_prod` varchar(4))
 SWAPBASE: BEGIN
