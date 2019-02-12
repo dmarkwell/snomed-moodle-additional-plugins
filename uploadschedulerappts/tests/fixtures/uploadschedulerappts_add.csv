@@ -1,0 +1,5 @@
+#uploadschedulerappts
+schedulerid,starttime,duration,tutor,timeanddateUrl,timeanddateText,webinarUrl,exclusivity
+34,1545771600,90,3,"http://www.timeanddate.com/worldclock/fixedtime.html?msg=Module+E+Webinar+-+Authoring+Level+1&iso=20181225T2100&p1=1440&ah=1&am=30","Tuesday, 25 December 2018  from 21:00 to 22:30 UTC","https://snomed.zoom.us/j/665206323",12
+34,1545739200,90,3,"http://www.timeanddate.com/worldclock/fixedtime.html?msg=Module+E+Webinar+-+Authoring+Level+1&iso=20181225T1200&p1=1440&ah=1&am=30","Tuesday, 25 December 2018  from 12:00 to 13:30 UTC","https://snomed.zoom.us/j/665206323",12
+34,1545807600,90,3,"http://www.timeanddate.com/worldclock/fixedtime.html?msg=Module+E+Webinar+-+Authoring+Level+1&iso=20181226T0700&p1=1440&ah=1&am=30","Wednesday, 26 December 2018  from 07:00 to 08:30 UTC","https://snomed.zoom.us/j/665206323",12

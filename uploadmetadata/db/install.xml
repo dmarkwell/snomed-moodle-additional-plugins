@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/uploadmetadata/db" VERSION="20181211" COMMENT="XMLDB file for upload metadata admin tool"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="elp_metadata" COMMENT="Presentation metadata source">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="filekey" TYPE="char" LENGTH="12" NOTNULL="true"  SEQUENCE="false"/>
+        <FIELD NAME="fileref" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="title" TYPE="text"  NOTNULL="true"  SEQUENCE="false"/>
+        <FIELD NAME="metadata" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for metadata"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="filekey" UNIQUE="true" FIELDS="filekey" COMMENT="Unique key index for link to activity"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
