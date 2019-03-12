@@ -27,3 +27,4 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname']   		= 'Video Popup Window';
 $string['heading']      		= 'Show Video';
+$string['back_to_course']       = 'Return to Course';

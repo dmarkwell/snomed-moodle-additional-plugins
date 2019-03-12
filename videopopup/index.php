@@ -78,32 +78,19 @@ if (!empty($cmid)) {
     print_error('missingparameter');
 }
 
-$videotitle=$page->name;
-
-$PAGE->set_pagelayout('popup');
-$PAGE->set_url($url);
-$PAGE->set_context($context);
-$PAGE->set_title($title);
-$PAGE->set_heading($heading);
 // admin_externalpage_setup('local_'.$pluginname); // Sets the navbar & expands navmenu.
 
 // Set up the form.
 // NO FORM
 
 // Display or process the form.
-
-echo '<div id="videotitle"  style="margin-bottom:4px; color:#3366ff; font-family:sans-serif; font-size:20px;">'.$videotitle.'</div><iframe id="ytplayer" type="text/html" width="100%" height="93%"
-src="https://www.youtube.com/embed/'.$videoid.'?autoplay=1&enablejsapi=1&modestbranding=1&color=white" frameborder="0" allowfullscreen>';
-
-
-// Redirect at end
 if ($course->format == 'singleactivity') {
     // Redirect students back to site home to avoid redirect loop.
     $exiturl = $CFG->wwwroot;
 } else {
     // Redirect back to the correct section if one section per page is being used.
-    $exiturl = course_get_url($course, $cm->sectionnum);
+    $exiturl = "'".course_get_url($course, $cm->sectionnum)."'";
 }
-
-$exitlink = html_writer::link($exiturl, $strexit, array('title' => $strexit));
-$PAGE->set_button($exitlink);
+echo '<htm><head><title>'.$page->name.'</title></head>';
+echo '<body onunload="window.opener.location.assign('.$exiturl.')";>';
+echo '<iframe id="ytplayer" type="text/html" width="100%" height="98%" src="https://www.youtube.com/embed/'.$videoid.'?autoplay=1&enablejsapi=1&modestbranding=1&color=white&rel=0" frameborder="0" allowfullscreen>';
