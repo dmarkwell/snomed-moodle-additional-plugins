@@ -91,6 +91,16 @@ $SESSION->qparam->qc='';
 $SESSION->qparam->qbname='';
 $SESSION->qparam->qcname='';
 
+if ($courseid) {
+	$seldata->courseparams = '&courseid='.$courseid;
+	if ($quizid) {
+		$seldata->quizparams.'&quizid='.$quizid;
+	}
+	else
+	{
+		$seldata->quizparams = $seldata->courseparams;
+	}
+}
 
 $seldata->cattitle = page_linktext('Question Bank',$seldata->quizparams);
 
@@ -125,18 +135,25 @@ foreach($qnodeset as $nodelevel => $nodeid) {
 	}
 }
 
-
-
 $seldata->quiztitle = page_linktext('Courses',$seldata->catparams);
 if ($courseid) {
+	$coursename = $DB->get_field('course','shortname',array( 'id' => $courseid ));
 	$seldata->quiztitle .= ' / '.page_linktext($coursename,$seldata->courseparams.$seldata->catparams);
+
 	if ($quizid) {
 		$quizmodid=$DB->get_field('course_modules','id',array( 'instance' => $quizid,'module'=>16 ));
+		$quizname=$DB->get_field('quiz','name',array( 'id' => $quizid ));
 		$seldata->quiztitle .= ' / '.page_linktext($quizname,$seldata->quizparams.$seldata->catparams).' '.get_icon_link('preview','View quiz','/mod/quiz/view.php?id='.$quizmodid);
 		$prevquizid=$quizid;
 		$prevquizname=$quizname;
+		$SESSION->qparam->qb='quiz';
+		$SESSION->qparam->qbid=$quizid;
+		$SESSION->qparam->qbname=$quizname;
 	}
 	else {
+		$SESSION->qparam->qb='course';
+		$SESSION->qparam->qbid=$courseid;
+		$SESSION->qparam->qbname=$coursename;
 		$sql = 'SELECT `q`.`id` `id`,`q`.`name` `cname`,count(`s`.`id`) `questions` FROM `mdl_quiz` `q` LEFT OUTER JOIN `mdl_quiz_slots` `s` ON `s`.`quizid`=`q`.`id` WHERE `q`.`course`='.$courseid.' GROUP BY `q`.`id` ORDER BY `q`.`name`;';
 		$rs = $DB->get_recordset_sql($sql);
 		if ($rs->valid()) {
