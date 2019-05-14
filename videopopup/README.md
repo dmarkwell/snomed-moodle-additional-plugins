@@ -1,22 +1,30 @@
 # Tool Simple Form #
 
-SNOMED Student Course Clear Form
+SNOMED Video Popup
 
 ## Description ##
 
-For deleting the records of an identified student in a specified course.
+For displaying a YouTube video in a SNOMED International popup.
 
-The course is specified by its shortname.
-The student is specified by their lastname and email as registered.
-A confirm button must be selected for the clearance to occur.
+URL Usage and Parameters:
 
-The delete procedure called is ClearStudentCourseProgress()
+To start a YouTube video in the popup use the following URL pattern:
 
-The log records created by the process are reported on completion.
+[moodle-server-url]/local/videopopup/index.php?cmid=[moodle-course-module-id]&videoid=[youtube-id-for-video]&mode=[mode]
+
+For example
+https://elearning.ihtsdotools.org/local/videopopup/index.php?cmid=1822&videoid=0LHr8Ihc4Ko&mode=course
+
+With mode=course (as shown above) on closing the popup window the Moodle course view will revert to the Course Section containing the identified course module. 
+
+To prevent this action from occuring (e.g. from a SCORM presentation)  omit the mode parameter (or as a future option use another parameter).
+
+For example
+https://elearning.ihtsdotools.org/local/videopopup/index.php?cmid=1822&videoid=0LHr8Ihc4Ko
 
 ## Requirements ##
 
-This plugin requires Moodle 2.9+ from https://moodle.org
+This plugin requires Moodle 3.4+ from https://moodle.org
 
 
 ## Installation and Update ##

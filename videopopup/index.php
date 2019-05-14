@@ -46,7 +46,7 @@ if (!isloggedin()) {
 // Define URL PARAMETERS
 $videoid = optional_param('videoid', null, PARAM_NOTAGS);
 $cmid = optional_param('cmid', '', PARAM_INT);  // Module Id
-
+$mode = optional_param('mode', '', PARAM_NOTAGS); // course -> on exit revert to section
 // Include form.
 // NO FORM
 
@@ -92,5 +92,11 @@ if ($course->format == 'singleactivity') {
     $exiturl = "'".course_get_url($course, $cm->sectionnum)."'";
 }
 echo '<htm><head><title>'.$page->name.'</title></head>';
-echo '<body onunload="window.opener.location.assign('.$exiturl.')";>';
+// If mode is 'course' (course video metadata launch - go to course section on unload.)
+if ($mode == 'course') {
+	echo '<body onunload="window.opener.location.assign('.$exiturl.')";>';
+}
+else {
+	echo '<body>';
+}
 echo '<iframe id="ytplayer" type="text/html" width="100%" height="98%" src="https://www.youtube.com/embed/'.$videoid.'?autoplay=1&enablejsapi=1&modestbranding=1&color=white&rel=0" frameborder="0" allowfullscreen>';
