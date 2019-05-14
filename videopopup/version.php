@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_videopopup';
-$plugin->version   = 2019021302;        // The current module version (Date: YYYYMMDDXX)
+$plugin->version   = 2019041700;        // The current module version (Date: YYYYMMDDXX)
 $plugin->requires  = 2017051200;
-$plugin->release   = '1.0.0';
+$plugin->release   = '1.1.0';
 $plugin->maturity  = MATURITY_STABLE;
