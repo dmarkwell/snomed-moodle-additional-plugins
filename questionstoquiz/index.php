@@ -42,14 +42,14 @@ if (!is_siteadmin()) {
 // Define URL PARAMETERS
 $topnode = optional_param('topnode', null, PARAM_INT);
 $coursenode  = optional_param('coursenode', null, PARAM_INT);
-$quiznode  = optional_param('quiznode', null, PARAM_INT);
 $questnode = optional_param('questnode', null, PARAM_INT);
 $subnode = optional_param('subnode', null, PARAM_INT);
 
 $quizid = optional_param('quizid', null, PARAM_INT);
 $courseid = optional_param('courseid', null, PARAM_INT);
+$quiznode  = optional_param('quiznode', null, PARAM_INT);
 
-$qnodeset = array( "topnode"=>$topnode,"coursenode"=>$coursenode,"quiznode"=>$quiznode,"questnode"=>$questnode,"subnode"=>$subnode );
+$qnodeset = array( "quiznode"=>$quiznode,"questnode"=>$questnode,"subnode"=>$subnode );
 
 // viewnode reserved for future use
 $viewmode = optional_param('viewmode', 'default', PARAM_INT);
@@ -84,6 +84,32 @@ $seldata->quizlist = '';
 $prevnodeid = 0;
 $sep='&';
 
+// TEMPORARY PLACE FOR THIS QUERY @id NEEDS TO BE COURSE ID
+$contextQuery="SELECT `ctx`.`id` from `mdl_context` `ctx`
+join `mdl_course` `c` ON `c`.`id`=`ctx`.`instanceid`
+where `c`.`id`=@id and `ctx`.`contextlevel`=50
+UNION
+select `ctx`.`id` from `mdl_context` `ctx`
+join `mdl_course_categories` `cc` ON `cc`.`id`=`ctx`.`instanceid` 
+join `mdl_course` `c` ON `c`.`category`=`cc`.`id`
+where `c`.`id`=@id
+and `ctx`.`contextlevel`=40;";
+
+$contextQuery2="SELECT * FROM `mdl_question_categories` `qc`
+WHERE `qc`.`contextid` IN (11293,3)
+AND BINARY `qc`.`name` regexp '^[A-Z][A-Z0-9]+[AEX]$;";
+
+$contextQuery3="SELECT * FROM `mdl_question_categories` `qc`
+WHERE `qc`.`contextid` IN (SELECT `ctx`.`id` from `mdl_context` `ctx`
+join `mdl_course` `c` ON `c`.`id`=`ctx`.`instanceid`
+where `c`.`id`=32 and `ctx`.`contextlevel`=50
+UNION
+select `ctx`.`id` from `mdl_context` `ctx`
+join `mdl_course_categories` `cc` ON `cc`.`id`=`ctx`.`instanceid` 
+join `mdl_course` `c` ON `c`.`category`=`cc`.`id`
+where `c`.`id`=32 and `ctx`.`contextlevel`=40)
+AND BINARY `qc`.`name` regexp '^[A-Z][A-Z0-9]+[AEX]$';";
+
 $SESSION->qparam->qcid=0;
 $SESSION->qparam->qbid=0;
 $SESSION->qparam->qb='';
@@ -91,9 +117,18 @@ $SESSION->qparam->qc='';
 $SESSION->qparam->qbname='';
 $SESSION->qparam->qcname='';
 
+// First check if the course parameter has been provided
 if ($courseid) {
 	$seldata->courseparams = '&courseid='.$courseid;
+	// If course parameter is set check if quiz parameter provided
 	if ($quizid) {
+		$seldata->quizparams.'&quizid='.$quizid;
+	}
+	else
+	{
+		$seldata->quizparams = $seldata->courseparams;
+	}
+	if ($catid) {
 		$seldata->quizparams.'&quizid='.$quizid;
 	}
 	else
@@ -102,6 +137,7 @@ if ($courseid) {
 	}
 }
 
+// Set the question bank title
 $seldata->cattitle = page_linktext('Question Bank',$seldata->quizparams);
 
 foreach($qnodeset as $nodelevel => $nodeid) {
@@ -175,6 +211,9 @@ else {
 	}
 	
 }
+
+
+
 
 echo $OUTPUT->header();
 
