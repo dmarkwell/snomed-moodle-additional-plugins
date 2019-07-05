@@ -154,7 +154,6 @@ class questionstoquiz_exception extends moodle_exception {
     }
 }
 
-
 function questionstoquiz_url($relativeurl) {
 	global $CFG;
     return $CFG->wwwroot.'/admin/tool/questionstoquiz/'.$relativeurl;
@@ -178,9 +177,18 @@ function get_icon_link($icon,$title,$link) {
 				'href' => $CFG->wwwroot.$link));
 }
 
+function get_option_list($rs,$param_prefix)
+{
+	$text='<ul>';
+	foreach ($rs as $record) {
+		$text+=page_linktext($record->name,$record->id);
+	}
+	$text+='</ul>';
+}
+
 function page_linktext($text,$params) {
 	global $CFG;
-    return '<a href="'.$CFG->wwwroot.'/admin/tool/questionstoquiz/index.php?'.substr($params,1).'">'.$text.'</a>';	
+    return '<a href="'.questionstoquiz_url('index.php?'.$params).'">'.$text.'</a>';	
 }
 
 function table_td($content){
