@@ -127,13 +127,8 @@ if (count($course_rec)==0) {
 	echo '<p>'.'No Courses with unpopulated quizzes'.'</p>';
 	}
 else 
-	{if (count($course_rec)==1) {
-		$seldata->courseid=$course_rec[0]->id;
-		$courseid=$course_rec[0]->id;
-		}
-	else {
-		$seldata->courseid=$courseid;
-	}
+	{
+	$seldata->courseid=$courseid;
 	$seldata->courselist=get_option_list($course_rec,'?courseid=');
 	}
 if ($seldata->courseid) {
