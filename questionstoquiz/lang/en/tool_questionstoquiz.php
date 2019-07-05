@@ -41,5 +41,5 @@ $string['quiz_has_questions']	= 'Selected quiz already has questions';
 $string['adding_questions']		= 'Adding questions ...';
 $string['actions_completed']	= 'Questions added.';
 $string['completion_message']	= 'Added questions to quiz: <ul><li>Quiz: {$a->quizid}) {$a->quizname} </li><li> Category: {$a->categoryid}) {$a->categoryname}.</li><li>Question subcategories: {$a->subcatcount}.</li></ul>';
-$string['validation_message']	= 'Valid quiz and question category.<br/>The "Confirm" checkbox must be checked to actually delete progress data for:<ul><li>Quiz: {$a->quizid}) {$a->quizname} </li><li> Category: {$a->categoryid}) {$a->categoryname}.</li><li>Question subcategories: {$a->subcatcount}.</li></ul>';
+$string['validation_message']	= 'Valid quiz and question category.<br/>The "Confirm" checkbox must be checked to add questions to the quiz:<ul><li>Quiz: {$a->quizid}) {$a->quizname} </li><li> Category: {$a->categoryid}) {$a->categoryname}.</li><li>Question subcategories: {$a->subcatcount}.</li></ul>';
 $string['back_to_form']			= '<br/><a href="{$a}">Back to form</a><br/>';

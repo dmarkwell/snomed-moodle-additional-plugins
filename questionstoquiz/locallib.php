@@ -47,7 +47,6 @@ class tool_questionstoquiz_handler {
         $report = array();
 		$fail = 0;
 		$SESSION->fdata=$data;
-		
 		//$quizid = $DB->get_field('quiz', 'id', array('name' => $data->quizname), IGNORE_MISSING);
 		$quizid = $data->quizid;
 		if (!$quizid) {
@@ -181,21 +180,22 @@ function get_option_list($rs,$param_prefix)
 {
 	$text='<ul>';
 	foreach ($rs as $record) {
-		$text+=page_linktext($record->name,$record->id);
+		$text.='<li>'.page_linktext($record->name,$param_prefix.$record->id).'</li>';
 	}
-	$text+='</ul>';
+	$text.='</ul>';
+	return $text;
 }
 
 function page_linktext($text,$params) {
 	global $CFG;
-    return '<a href="'.questionstoquiz_url('index.php?'.$params).'">'.$text.'</a>';	
+    return '<a href="'.questionstoquiz_url('index.php'.$params).'">'.$text.'</a>';	
 }
 
 function table_td($content){
-	return '<td width="50%" style="vertical-align: text-top;">'.$content.'</td>';
+	return '<td width="33%" style="vertical-align: text-top;">'.$content.'</td>';
 }
 function table_th($content){
-	return '<th width="50%" style="vertical-align: text-top;horizontal-align: text-center;">'.$content.'</th>';
+	return '<th width="33%" style="vertical-align: text-top;horizontal-align: text-center;">'.$content.'</th>';
 }
 
 function div_color($text,$color)

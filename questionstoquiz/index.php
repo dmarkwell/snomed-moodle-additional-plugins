@@ -43,7 +43,7 @@ if (!is_siteadmin()) {
 // Selected courseid, quizid and question category id
 $courseid = optional_param('courseid', null, PARAM_INT);
 $quizid = optional_param('quizid', null, PARAM_INT);
-$qcatid  = optional_param('qcatif', null, PARAM_INT);
+$qcatid  = optional_param('qcatid', null, PARAM_INT);
 
 // Include form.
 require_once(dirname(__FILE__).'/'.$pluginname.'_form.php');
@@ -109,61 +109,70 @@ join `mdl_course` `c` ON `c`.`category`=`cc`.`id`
 where `c`.`id`=@courseid and `ctx`.`contextlevel`=40)
 AND BINARY `qc`.`name` regexp '^[A-Z][A-Z0-9]+[AEX]$';";
 
+
+echo $OUTPUT->header();
+
 //Get course list only include courses with at least on empty quiz
 //If only one course found this becomes the selected course
-$course_rs = $DB->get_recordset_sql($courseQuery);
-if ($course_rs->valid()) {
-	if (count($course_rs)==1) {
-		$seldata->courseid=$course_rs->id;
-		$seldata->courselist='</br>';
+$course_rec = $DB->get_records_sql($courseQuery);
+if (count($course_rec)==0) {
+	echo '<p>'.'No Courses with unpopulated quizzes'.'</p>';
+	}
+else 
+	{if (count($course_rec)==1) {
+		$seldata->courseid=$course_rec[0]->id;
 		}
 	else {
 		$seldata->courseid=$courseid;
-		$seldata->courselist=get_option_list($course_rs,'?courseid=');
-		}
 	}
-
+	$seldata->courselist=get_option_list($course_rec,'?courseid=');
+	}
 if ($seldata->courseid) {
 	// Open the quiz and qcat recordsets
 	$quiz_sql=str_replace('@courseid',$seldata->courseid,$quizQuery);
-	$quiz_rs = $DB->get_recordset_sql($quiz_sql);
-	$qcat_sql=str_replace('@courseid',$seldata->courseid,$quizQuery);
-	$qcat_rs = $DB->get_recordset_sql($qcat_sql);
-	if ($quiz_rs->valid()) {
-		if (count($quiz_rs)==1) {
-			$seldata->quizid=$quiz_rs->id;
-			}
+	$quiz_rec = $DB->get_records_sql($quiz_sql);
+	$qcat_sql=str_replace('@courseid',$seldata->courseid,$questionCategoryQuery);
+	$qcat_rec = $DB->get_records_sql($qcat_sql);
+
+	if (count($quiz_rec)==0) {
+		$seldata->quizlist='<li>No empty quiz</li>';
 		}
-		if ($qcat_rs->valid()) {
-			if (count($qcat_rs)==1) {
-				$seldata->qcatid=$qcat_rs->id;
-				}
-			}
-		// Prepare quiz parameter stem including &qcatid= only if $seldata->qcatid is set
-		if ($seldata->qcatid == '') {
-			$quiz_param='?courseid='.$seldata->courseid.'&quizid=';
+	elseif (count($quiz_rec)==1) {
+		$seldata->quizid=$quiz_rec[0]->id;
 		}
-		else {
-			$quiz_param='?courseid='.$seldata->courseid.'&qcatid='.$seldata->qcatid.'&quizid=';
+	else {
+		$seldata->quizid=$quizid;
 		}
-		// Prepare question category parameter stem including &quizid= only if $seldata->quizid is set
-		if ($seldata->quizid == '') {
-			$qcat_param='?courseid='.$seldata->courseid.'&qcatid=';
+	if (count($qcat_rec)==0) {
+		$seldata->qcatlist='<li>No question category</li>';
 		}
-		else {
-			$qcat_param='?courseid='.$seldata->courseid.'&quizid='.$seldata->quizid.'&qcatid=';
+	elseif (count($qcat_rec)==1) {
+		$seldata->qcatid=$qcat_rec[0]->id;
 		}
-		if (count($quiz_rs)>1) {
-			$seldata->quizid=$quizid;
-			$seldata->courselist=get_option_list($quiz_rs,$quiz_param);
-			}
-		}
-		if ($qcat_rs->valid()) {
-			if (count($qcat_rs)>1) {
-				$seldata->qcatid=$qcatid;
-				$seldata->courselist=get_option_list($quiz_rs,$qcat_param);
-				}
-			}
+	else {
+		$seldata->qcatid=$qcatid;
+	}
+	// Prepare quiz parameter stem including &qcatid= only if $seldata->qcatid is set
+	if ($seldata->qcatid == '') {
+		$quiz_param='?courseid='.$seldata->courseid.'&quizid=';
+	}
+	else {
+		$quiz_param='?courseid='.$seldata->courseid.'&qcatid='.$seldata->qcatid.'&quizid=';
+	}
+	// Prepare question category parameter stem including &quizid= only if $seldata->quizid is set
+	if ($seldata->quizid == '') {
+		$qcat_param='?courseid='.$seldata->courseid.'&qcatid=';
+	}
+	else {
+		$qcat_param='?courseid='.$seldata->courseid.'&quizid='.$seldata->quizid.'&qcatid=';
+	}
+	if (count($quiz_rec)>0) {
+		$seldata->quizlist=get_option_list($quiz_rec,$quiz_param);
+	}
+	if (count($qcat_rec)>0) {
+		$seldata->qcatlist=get_option_list($qcat_rec,$qcat_param);
+	}
+}
 // Get names of selected items
 	$seldata->coursename = $DB->get_field('course','shortname', ['id' => $seldata->courseid]);
 	$seldata->quizname = $DB->get_field('quiz', 'name', ['id' => $seldata->quizid]);
@@ -172,13 +181,12 @@ if ($seldata->courseid) {
 //get selected course if any
 // First check if the course parameter has been provided
 
-
-echo $OUTPUT->header();
-
-$SESSION->fdata->quizid=$SESSION->$seldata->quizid;
-$SESSION->fdata->quizname=$SESSION->$seldata->quizname;
-$SESSION->fdata->categoryid=$SESSION->$seldata->qcatid;
-$SESSION->fdata->categoryname=$SESSION->$seldata->qcatname;
+if ($seldata->quizid) {
+$SESSION->fdata->quizid=$seldata->quizid;
+$SESSION->fdata->quizname=$seldata->quizname;
+$SESSION->fdata->categoryid=$seldata->qcatid;
+$SESSION->fdata->categoryname=$seldata->qcatname;
+}
 
 // Set up the form.
 $form = new questionstoquiz_form(null, array());
@@ -187,29 +195,25 @@ if ($form->is_cancelled()) {
 }
 
 $data = $form->get_data();
-if (!$data) { // Display the form.
 
+if (!$data) { // Display the form.
 	echo '<p>Use the links in the lists below to navigate to a new empty quiz and the category that contains the questions. Your selections will appear in the form at the bottom of the screen.</p>';
 	echo '<table width="100%"><tbody>';
-	echo '<tr>'.table_th('Courses').table_th('Quizes`').table_th('Question Categories').'</tr>';
+	echo '<tr>'.table_th('Courses').table_th('Quizzes`').table_th('Question Categories').'</tr>';
 	echo '<tr>'.table_td($seldata->courselist).table_td($seldata->quizlist).table_td($seldata->qcatlist).'</tr>';
 	echo '<tr>'.table_th('Selected Course').table_th('Selected Quiz').table_th('Selected Category').'</tr>';
 	echo '<tr>'.table_th($seldata->coursename).table_th($seldata->quizname).table_th($seldata->qcatname).'</tr>';
 	echo '</tbody></table>';
-
     // Display the form.
     $form->display();
-
 } 
 else {      // Process the form data.
-
-    // Show form data for confirmation.
+	// Show form data for confirmation.
+	
     $handler = new tool_questionstoquiz_handler();
     $report = $handler->process($data);
     echo $report;
-	
 }
-
 
 // Footer.
 echo $OUTPUT->footer();
