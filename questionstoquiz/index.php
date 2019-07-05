@@ -129,6 +129,7 @@ if (count($course_rec)==0) {
 else 
 	{if (count($course_rec)==1) {
 		$seldata->courseid=$course_rec[0]->id;
+		$courseid=$course_rec[0]->id;
 		}
 	else {
 		$seldata->courseid=$courseid;
