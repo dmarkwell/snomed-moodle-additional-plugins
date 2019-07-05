@@ -77,6 +77,14 @@ $seldata->coursename = '';
 $seldata->quizname = '';
 $seldata->qcatname = '';
 
+if ($courseid && $courseid!=$SESSION->fdata->courseid)
+{
+	$SESSION->fdata->courseid='';
+	$SESSION->fdata->quizid='';
+	$SESSION->fdata->quizname='';
+	$SESSION->fdata->categoryid='';
+	$SESSION->fdata->categoryname='';
+}
 
 
 // TEMPORARY PLACE FOR THIS QUERY @id NEEDS TO BE COURSE ID
@@ -137,17 +145,11 @@ if ($seldata->courseid) {
 	if (count($quiz_rec)==0) {
 		$seldata->quizlist='<li>No empty quiz</li>';
 		}
-	elseif (count($quiz_rec)==1) {
-		$seldata->quizid=$quiz_rec[0]->id;
-		}
 	else {
 		$seldata->quizid=$quizid;
 		}
 	if (count($qcat_rec)==0) {
 		$seldata->qcatlist='<li>No question category</li>';
-		}
-	elseif (count($qcat_rec)==1) {
-		$seldata->qcatid=$qcat_rec[0]->id;
 		}
 	else {
 		$seldata->qcatid=$qcatid;
@@ -177,9 +179,6 @@ if ($seldata->courseid) {
 	$seldata->coursename = $DB->get_field('course','shortname', ['id' => $seldata->courseid]);
 	$seldata->quizname = $DB->get_field('quiz', 'name', ['id' => $seldata->quizid]);
 	$seldata->qcatname = $DB->get_field('question_categories','name', ['id' => $seldata->qcatid ]);
-
-//get selected course if any
-// First check if the course parameter has been provided
 
 if ($seldata->quizid) {
 $SESSION->fdata->quizid=$seldata->quizid;
