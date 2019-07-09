@@ -8,23 +8,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <INDEX NAME="reference" UNIQUE="false" FIELDS="refid"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="elp_scorm_link" COMMENT="A reference to all activities that use the same SCORM package.">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="refid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The refid to used by plugin. The refid links to all the scormid, sooid and moduleid values that use this package."/>
-        <FIELD NAME="scormid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of a linked mdl_scorm row."/>
-        <FIELD NAME="scoid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The SCOID for the mdl_scorm row."/>
-        <FIELD NAME="moduleid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the mdl_course_modules row for the linked scorm package."/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <INDEX NAME="refid" UNIQUE="false" FIELDS="refid" COMMENT="Indexed reference linking to all actictivities referring to same scorm package"/>
-        <INDEX NAME="scormid" UNIQUE="true" FIELDS="scormid" COMMENT="Unique key index for link to activity"/>
-        <INDEX NAME="scoid" UNIQUE="true" FIELDS="scoid" COMMENT="Unique key index for link to activity"/>
-        <INDEX NAME="moduleid" UNIQUE="true" FIELDS="moduleid" COMMENT="Unique key index for link to activity"/>
+        <INDEX NAME="reference" UNIQUE="true" FIELDS="refid"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="elp_scorm_track" COMMENT="User viewing history for each scorm package">
@@ -32,7 +16,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="refid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The refid to used by plugin. The refid links all activities that use this package."/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The id of a user who viewed this package."/>
-        <FIELD NAME="modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The time when this packages was viewed by this student."/>
+        <FIELD NAME="modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The time when this package was viewed by this student."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -42,19 +26,36 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="filekey" TYPE="char" LENGTH="12" NOTNULL="true" SEQUENCE="false" COMMENT="ELPXXXX key"/>
-        <FIELD NAME="fileref" TYPE="text" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File name without extension"/><FIELD NAME="type" TYPE="char" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="Fite type extension"/>
-        <FIELD NAME="created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/><FIELD NAME="modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/><FIELD NAME="filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/><FIELD NAME="logtime" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time of creating this row."/>
+        <FIELD NAME="fileref" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="File name without extension"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="Fite type extension"/>
+        <FIELD NAME="created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/>
+        <FIELD NAME="modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/>
+        <FIELD NAME="filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/>
+        <FIELD NAME="logtime" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time of creating this row."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <INDEX NAME="ftm" UNIQUE="true" FIELDS="filekey, type, modified"/><INDEX NAME="filekey" UNIQUE="false" FIELDS="filekey"/>
+        <INDEX NAME="ftm" UNIQUE="true" FIELDS="filekey, type, modified"/>
+        <INDEX NAME="filekey" UNIQUE="false" FIELDS="filekey"/>
       </KEYS>
     </TABLE><TABLE NAME="elp_fileupdate_summaries" COMMENT="Stores update summaries for each month, quarter and year including info on all presentation files changed in that period.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="yearmonth" TYPE="char" LENGTH="12" NOTNULL="true" SEQUENCE="false" COMMENT="Represents the period summarized. For month: YYYYMM. For Quarter YYYYQn (e.g. 2018Q4). For year YYYY."/><FIELD NAME="filekey" TYPE="char" LENGTH="12" NOTNULL="true" SEQUENCE="false" COMMENT="ELPXXXX key"/>
-        <FIELD NAME="fileref" TYPE="text" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File name without extension"/><FIELD NAME="type" TYPE="char" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="Fite type extension"/>
-        <FIELD NAME="scorm_created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/><FIELD NAME="scorm_modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/><FIELD NAME="scorm_filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/><FIELD NAME="scorm_prevsize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Previous file size (before last update)"/><FIELD NAME="pptx_created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/><FIELD NAME="pptx_modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/><FIELD NAME="pptx_filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/><FIELD NAME="pptx_prevsize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Previous file size (before last update)"/><FIELD NAME="pdf_created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/><FIELD NAME="pdf_modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/><FIELD NAME="pdf_filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/><FIELD NAME="pdf_prevsize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Previous file size (before last update)"/>
+        <FIELD NAME="yearmonth" TYPE="char" LENGTH="8" NOTNULL="true" SEQUENCE="false" COMMENT="Represents the period summarized. For month: YYYYMM. For Quarter YYYYQn (e.g. 2018Q4). For year YYYY."/><FIELD NAME="filekey" TYPE="char" LENGTH="12" NOTNULL="true" SEQUENCE="false" COMMENT="ELPXXXX key"/>
+        <FIELD NAME="fileref" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="File name without extension"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="Fite type extension"/>
+        <FIELD NAME="scorm_created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/>
+        <FIELD NAME="scorm_updated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/>
+        <FIELD NAME="scorm_filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/>
+        <FIELD NAME="scorm_prevsize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Previous file size (before last update)"/>
+        <FIELD NAME="pptx_created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/>
+        <FIELD NAME="pptx_updated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/>
+        <FIELD NAME="pptx_filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/>
+        <FIELD NAME="pptx_prevsize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Previous file size (before last update)"/>
+        <FIELD NAME="pdf_created" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File created date"/>
+        <FIELD NAME="pdf_updated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File last modified date"/>
+        <FIELD NAME="pdf_filesize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="File size"/>
+        <FIELD NAME="pdf_prevsize" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Previous file size (before last update)"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -64,7 +65,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="attemptid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Internal identifier of the attempt."/><FIELD NAME="quiz" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Identifies the quiz to which the attempt relates."/><FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User attempting the answer."/><FIELD NAME="attempt" TYPE="int" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="Attempt number for that user on that question."/>
-        <FIELD NAME="slot" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Slot postion of question in the quiz."/><FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Link to the unique id of the question."/><FIELD NAME="answer" TYPE="text" LENGTH="" NOTNULL="true" SEQUENCE="false" COMMENT="Answer"/>
+        <FIELD NAME="slot" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Slot postion of question in the quiz."/><FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Link to the unique id of the question."/><FIELD NAME="answer" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Answer"/>
         <FIELD NAME="seq" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Sequence number of attempt"/><FIELD NAME="maxmark" TYPE="number" LENGTH="12" DECIMALS="7" NOTNULL="true" SEQUENCE="false" COMMENT="Maximum possible mark"/><FIELD NAME="fraction" TYPE="number" LENGTH="12" DECIMALS="7" NOTNULL="true" SEQUENCE="false" COMMENT="Fraction of the maximum scored"/><FIELD NAME="flag" TYPE="int" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="Indicator or quiz completion state"/><FIELD NAME="attempttime" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time of the attempt"/><FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time last modified"/><FIELD NAME="attemptstate" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Status of the attempt."/><FIELD NAME="group" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Student intake group."/>
       </FIELDS>
       <KEYS>
