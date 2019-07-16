@@ -1,5 +1,5 @@
 DELIMITER ;;
-DROP PROCEDURE `SurveyToProfileUpdate`;;
+DROP PROCEDURE IF EXISTS `SurveyToProfileUpdate`;;
 CREATE PROCEDURE `SurveyToProfileUpdate` (IN `p_startDate` varchar(12))
 BEGIN
 DECLARE `v_name` varchar(32);
@@ -16,10 +16,10 @@ DECLARE `v_startdate` bigint(10);
 DECLARE `v_lastmodified` bigint(10);
 DECLARE `done` tinyint(2);
 
-DECLARE `cur1` CURSOR FOR SELECT `name`,`questionnaireid`,`question_idlist`,`fieldid`,`multi`
+DECLARE `cur1` CURSOR FOR SELECT `name`,`questionnaire_idlist`,`question_idlist`,`fieldid`,`multi`
 	FROM `tmp_elp_questionnaire_lists`;
 
-DECLARE `cur2` CURSOR FOR SELECT `userid`,`name`,`value`,`fieldid`,`submitted`
+DECLARE `cur2` CURSOR FOR SELECT `userid`,`name`,`fieldid`,`value`,`submitted`
 	FROM `tmp_update` ORDER BY `userid`,`submitted`;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET `done` = TRUE;
 
@@ -34,33 +34,34 @@ CREATE TEMPORARY TABLE `tmp_elp_questionnaire_lists` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `tmp_elp_questionnaire_lists` (`name`,`questionnaire_idlist`,`question_idlist`,`fieldid`,`multi`)
-SELECT 'institution',GROUP_CONCAT(DISTINCT `q`.`questionnaireid`), GROUP_CONCAT(DISTINCT `qq`.`id` ),0,0
+SELECT 'institution',GROUP_CONCAT(DISTINCT `q`.`id`), GROUP_CONCAT(DISTINCT `qq`.`id` ),0,0
 FROM `mdl_questionnaire_question` `qq`
 JOIN `mdl_questionnaire` `q` ON `q`.`sid`=`qq`.`surveyid`
 WHERE `qq`.`name`regexp '[Ee]mployer'
 UNION
-SELECT 'country',GROUP_CONCAT(DISTINCT `q`.`questionnaireid`), GROUP_CONCAT(DISTINCT `qq`.`id` ),0,0
+SELECT 'country',GROUP_CONCAT(DISTINCT `q`.`id`), GROUP_CONCAT(DISTINCT `qq`.`id` ),0,0
 FROM `mdl_questionnaire_question` `qq`
 JOIN `mdl_questionnaire` `q` ON `q`.`sid`=`qq`.`surveyid`
 WHERE `qq`.`name`regexp '[Cc]ountry'
 UNION
-SELECT 'role',GROUP_CONCAT(DISTINCT `q`.`questionnaireid`), GROUP_CONCAT(DISTINCT `qq`.`id` ),MIN(`f`.`id`),0
-FROM `mdl_questionnaire_question` `qq`, `mdl_user_info_field` `f`
+SELECT 'role',GROUP_CONCAT(DISTINCT `q`.`id`), GROUP_CONCAT(DISTINCT `qq`.`id` ),MIN(`f`.`id`),0
+FROM `mdl_questionnaire_question` `qq`
+JOIN `mdl_user_info_field` `f` ON `f`.`shortname`='role'
 JOIN `mdl_questionnaire` `q` ON `q`.`sid`=`qq`.`surveyid`
 WHERE `qq`.`name`regexp '[Rr]ole|[Pp]osition'
-AND `f`.`shortname`='role'
 UNION
-SELECT 'expertise',GROUP_CONCAT(DISTINCT `q`.`questionnaireid`), GROUP_CONCAT(DISTINCT `qq`.`id` ),MIN(`f`.`id`),1
-FROM `mdl_questionnaire_question` `qq`, `mdl_user_info_field` `f`
+SELECT 'expertise',GROUP_CONCAT(DISTINCT `q`.`id`), GROUP_CONCAT(DISTINCT `qq`.`id` ),MIN(`f`.`id`),1
+FROM `mdl_questionnaire_question` `qq`
+JOIN `mdl_user_info_field` `f` ON `f`.`shortname`='expertise'
 JOIN `mdl_questionnaire` `q` ON `q`.`sid`=`qq`.`surveyid`
 WHERE `qq`.`name`regexp '[Ss]kill|[Ee]xperti[sz]e'
-AND `f`.`shortname`='expertise'
 UNION
-SELECT 'interest',GROUP_CONCAT(DISTINCT `q`.`questionnaireid`), GROUP_CONCAT(DISTINCT `qq`.`id` ),MIN(`f`.`id`),1
-FROM `mdl_questionnaire_question` `qq`, `mdl_user_info_field` `f`
+SELECT 'interest',GROUP_CONCAT(DISTINCT `q`.`id`), GROUP_CONCAT(DISTINCT `qq`.`id` ),MIN(`f`.`id`),1
+FROM `mdl_questionnaire_question` `qq`
+JOIN `mdl_user_info_field` `f` ON `f`.`shortname`='interests'
 JOIN `mdl_questionnaire` `q` ON `q`.`sid`=`qq`.`surveyid`
 WHERE `qq`.`name`regexp '[Bb]ackground|[Ii]nterest'
-AND `f`.`shortname`='interests'
+
 GROUP BY CASE LOWER(LEFT(`qq`.`name`,3)) WHEN 'emp' THEN 1 WHEN 'cou'  THEN 2 WHEN 'rol' THEN 3 WHEN 'pos' THEN 3 WHEN 'ski' THEN 4 WHEN 'exp' THEN 4 ELSE 5 END;
 
 
@@ -102,7 +103,7 @@ cur_loop: LOOP
 			WHERE FIND_IN_SET(`t`.`question_id`,`v_questions`)>0
 				AND `r`.`complete`='y'
 				AND `r`.`submitted`>`v_startdate`
-				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`questionnaireid`,`v_questionnaires`)>0 AND `userid`=`r`.`userid`)
+				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`questionnaireid`,`v_questionnaires`)>0)
 				AND `r`.`submitted`>(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`r`.`userid`);
 	ELSEIF `v_multi` !=0 THEN
 		INSERT INTO `tmp_update` (`userid`,`name`,`fieldid`,`value`,`submitted`)
@@ -113,7 +114,7 @@ cur_loop: LOOP
 			WHERE FIND_IN_SET(`t`.`question_id`,`v_questions`)>0
 				AND `r`.`complete`='y'
 				AND `r`.`submitted`>`v_startdate`
-				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`questionnaireid`,`v_questionnaires`)>0 AND `userid`=`r`.`userid`)
+				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`questionnaireid`,`v_questionnaires`)>0)
 				AND `r`.`submitted`>(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`r`.`userid`)
 			GROUP BY `r`.`userid`,`t`.`question_id`,`t`.`response_id`;
 	ELSE
@@ -125,7 +126,7 @@ cur_loop: LOOP
 			WHERE FIND_IN_SET(`t`.`question_id`,`v_questions`)>0
 				AND `r`.`complete`='y'
 				AND `r`.`submitted`>`v_startdate`
-				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`questionnaireid`,`v_questionnaires`)>0 AND `userid`=`r`.`userid`)
+				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`questionnaireid`,`v_questionnaires`)>0)
 				AND `r`.`submitted`>(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`r`.`userid`);
 	END IF;
 
