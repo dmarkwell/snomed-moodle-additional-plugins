@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 
 $plugin->component = 'tool_snomedtasks'; // Full name of the plugin (used for diagnostics).
-$plugin->version   = 2019013000; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2019070900; // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2017051200;
-$plugin->release = '1.0.5';
+$plugin->release = '3.5.1';
 $plugin->maturity = MATURITY_STABLE;

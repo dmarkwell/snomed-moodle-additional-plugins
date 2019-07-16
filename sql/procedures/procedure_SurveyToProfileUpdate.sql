@@ -1,6 +1,6 @@
 DELIMITER ;;
-DROP PROCEDURE IF EXISTS `SurveyToProfileUpdate`;;
-CREATE PROCEDURE `SurveyToProfileUpdate`(IN `p_startDate` varchar(12))
+DROP PROCEDURE `SurveyToProfileUpdate`;;
+CREATE PROCEDURE `SurveyToProfileUpdate` (IN `p_startDate` varchar(12))
 BEGIN
 DECLARE `v_name` varchar(32);
 DECLARE `v_fieldid` bigint(10);
@@ -21,8 +21,6 @@ DECLARE `cur1` CURSOR FOR SELECT `name`,`survey_idlist`,`question_idlist`,`field
 
 DECLARE `cur2` CURSOR FOR SELECT `userid`,`name`,`value`,`fieldid`,`submitted`
 	FROM `tmp_update` ORDER BY `userid`,`submitted`;
-	
-	
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET `done` = TRUE;
 
 DROP TABLE IF EXISTS `tmp_elp_survey_lists`;
@@ -38,25 +36,25 @@ CREATE TEMPORARY TABLE `tmp_elp_survey_lists` (
 INSERT INTO `tmp_elp_survey_lists` (`name`,`survey_idlist`,`question_idlist`,`fieldid`,`multi`)
 SELECT 'institution', GROUP_CONCAT(DISTINCT `q`.`survey_id` ),GROUP_CONCAT(DISTINCT `q`.`id` ),0,0
 FROM `mdl_questionnaire_question` `q`
-WHERE `q`.`name`regexp '[Ee]mployer' 
+WHERE `q`.`name`regexp '[Ee]mployer'
 UNION
 SELECT 'country', GROUP_CONCAT(DISTINCT `q`.`survey_id` ),GROUP_CONCAT(DISTINCT `q`.`id` ),0,0
 FROM `mdl_questionnaire_question` `q`
-WHERE `q`.`name`regexp '[Cc]ountry' 
+WHERE `q`.`name`regexp '[Cc]ountry'
 UNION
 SELECT 'role', GROUP_CONCAT(DISTINCT `q`.`survey_id` ),GROUP_CONCAT(DISTINCT `q`.`id` ),MIN(`f`.`id`),0
 FROM `mdl_questionnaire_question` `q`, `mdl_user_info_field` `f`
-WHERE `q`.`name`regexp '[Rr]ole|[Pp]osition' 
+WHERE `q`.`name`regexp '[Rr]ole|[Pp]osition'
 AND `f`.`shortname`='role'
 UNION
 SELECT 'expertise', GROUP_CONCAT(DISTINCT `q`.`survey_id` ),GROUP_CONCAT(DISTINCT `q`.`id` ),MIN(`f`.`id`),1
 FROM `mdl_questionnaire_question` `q`, `mdl_user_info_field` `f`
-WHERE `q`.`name`regexp '[Ss]kill|[Ee]xperti[sz]e' 
+WHERE `q`.`name`regexp '[Ss]kill|[Ee]xperti[sz]e'
 AND `f`.`shortname`='expertise'
 UNION
 SELECT 'interest', GROUP_CONCAT(DISTINCT `q`.`survey_id` ),GROUP_CONCAT(DISTINCT `q`.`id` ),MIN(`f`.`id`),1
 FROM `mdl_questionnaire_question` `q`, `mdl_user_info_field` `f`
-WHERE `q`.`name`regexp '[Bb]ackground|[Ii]nterest' 
+WHERE `q`.`name`regexp '[Bb]ackground|[Ii]nterest'
 AND `f`.`shortname`='interests'
 GROUP BY CASE LOWER(LEFT(`q`.`name`,3)) WHEN 'emp' THEN 1 WHEN 'cou'  THEN 2 WHEN 'rol' THEN 3 WHEN 'pos' THEN 3 WHEN 'ski' THEN 4 WHEN 'exp' THEN 4 ELSE 5 END;
 
@@ -84,7 +82,6 @@ CREATE TABLE `tmp_update`
 OPEN `cur1`;
 cur_loop: LOOP
 	FETCH `cur1` INTO `v_name`,`v_surveys`,`v_questions`,`v_fieldid`,`v_multi`;
-	
 	IF `done` THEN
 		LEAVE cur_loop;
 	END IF;
@@ -101,11 +98,8 @@ cur_loop: LOOP
 				AND `r`.`complete`='y'
 				AND `r`.`submitted`>`v_startdate`
 				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`survey_id`,`v_surveys`)>0 AND `userid`=`r`.`userid`)
-				AND `r`.`submitted`>(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`r`.`userid`)
-;
-			
+				AND `r`.`submitted`>(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`r`.`userid`);
 	ELSEIF `v_multi` !=0 THEN
-    
 		INSERT INTO `tmp_update` (`userid`,`name`,`fieldid`,`value`,`submitted`)
 			SELECT `r`.`userid`,`v_name`,`v_fieldid`,GROUP_CONCAT(If(`c`.`value` = NULL,`c`.`content`,SUBSTRING_INDEX(`c`.`content`,'=',-1)) SEPARATOR ', '),`r`.`submitted`
 			FROM `mdl_questionnaire_resp_multiple` `t`
@@ -127,7 +121,7 @@ cur_loop: LOOP
 				AND `r`.`complete`='y'
 				AND `r`.`submitted`>`v_startdate`
 				AND `r`.`submitted`=(SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE FIND_IN_SET(`r`.`survey_id`,`v_surveys`)>0 AND `userid`=`r`.`userid`)
-				AND `r`.`submitted`>(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`r`.`userid`);			
+				AND `r`.`submitted`>(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`r`.`userid`);
 	END IF;
 
 END LOOP;
@@ -171,10 +165,9 @@ cur_loop2: LOOP
 			SET `v_update_required`=0;
 		END IF;
 	END IF;
-	
 END LOOP;
-	
 DROP TABLE IF EXISTS `tmp_update`;
 DROP TABLE IF EXISTS `tmp_elp_survey_lists`;
 
 END;;
+DELIMITER ;
