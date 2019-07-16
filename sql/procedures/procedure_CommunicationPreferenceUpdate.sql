@@ -57,7 +57,7 @@ FROM `mdl_questionnaire_question` `qq`
 JOIN `mdl_questionnaire_quest_choice`  `qc` ON `qc`.`question_id`=`qq`.`id`
 JOIN `mdl_cohort` `c` ON `c`.`idnumber`=SUBSTRING_INDEX(`qc`.`value`,'=',1)
 JOIN `mdl_user_info_field` `f` ON `f`.`shortname`=SUBSTRING_INDEX(`qc`.`value`,'=',1)
-WHERE `qq`.`survey_id`=34;
+WHERE `qq`.`surveyid`=34;
 
 
 INSERT INTO `tmp_user_choice` (`userid`,`submitted`,`cohort`,`cohort_member_id`,`info_field`,`value`)
@@ -66,9 +66,9 @@ FROM `mdl_questionnaire_response` `qr`
 JOIN `mdl_questionnaire_resp_single` `qs` ON `qr`.`id`=`qs`.`response_id`
 JOIN `tmp_choice` `tc` ON `tc`.`choice`=`qs`.`choice_id`
 LEFT OUTER JOIN `mdl_cohort_members` `cm` ON `cm`.`cohortid`=`tc`.`cohort` AND `cm`.`userid`=`qr`.`userid`
-WHERE `survey_id` = '34' AND `complete` = 'y' 
+WHERE `qr`.`questionnaireid` = 60 AND `complete` = 'y' 
 AND `submitted`>v_startDate
-AND `submitted` IN (SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE `survey_id`=34 AND `userid`=`qr`.`userid`);
+AND `submitted` IN (SELECT MAX(`submitted`) FROM `mdl_questionnaire_response` WHERE `questionnaireid`=60 AND `userid`=`qr`.`userid`);
 
 
 INSERT IGNORE INTO `tmp_user_choice` (`userid`,`submitted`,`cohort`,`cohort_member_id`,`info_field`,`value`)
