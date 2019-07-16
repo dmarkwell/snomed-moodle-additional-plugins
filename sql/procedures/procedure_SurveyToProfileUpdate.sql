@@ -133,7 +133,6 @@ SET `v_prevuserid`=0;
 OPEN `cur2`;
 cur_loop2: LOOP
 	FETCH `cur2` INTO `v_userid`,`v_name`,`v_fieldid`,`v_value`,`v_submitted`;
-	
 	IF `done` THEN
 		LEAVE cur_loop2;
 	END IF;
@@ -152,7 +151,7 @@ cur_loop2: LOOP
 			INSERT INTO `mdl_user_info_data` (`userid`,`fieldid`,`data`)
 			SELECT `v_userid`,`v_fieldid`,`v_value` FROM `tmp_update` WHERE `type`=`name`
 				ON DUPLICATE KEY UPDATE `data`=`value`;
-			IF ROW_COUNT()=1 THEN 
+			IF ROW_COUNT()=1 THEN
 				SET `v_update_required`=1;
 			END IF;
 		ELSEIF `v_name`='country' THEN
