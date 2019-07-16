@@ -64,7 +64,7 @@ WHERE `qq`.`name`regexp '[Bb]ackground|[Ii]nterest'
 
 GROUP BY CASE LOWER(LEFT(`qq`.`name`,3)) WHEN 'emp' THEN 1 WHEN 'cou'  THEN 2 WHEN 'rol' THEN 3 WHEN 'pos' THEN 3 WHEN 'ski' THEN 4 WHEN 'exp' THEN 4 ELSE 5 END;
 
-
+SET `v_prevuserid`=0;
 
 CASE LOWER(LEFT(`p_startDate`,1))
   WHEN 'd' THEN SET `v_startDate`=UNIX_TIMESTAMP(SUBDATE(Now(),INTERVAL 1 DAY));
@@ -91,7 +91,6 @@ cur_loop: LOOP
 	IF `done` THEN
 		LEAVE cur_loop;
 	END IF;
-
 	IF `v_name`='country' THEN
 
 		INSERT INTO `tmp_update` (`userid`,`name`,`fieldid`,`value`,`submitted`)
@@ -132,30 +131,28 @@ cur_loop: LOOP
 
 END LOOP;
 
+
 SET `done` = FALSE;
 
 SET `v_prevuserid`=0;
-
 OPEN `cur2`;
 cur_loop2: LOOP
 	FETCH `cur2` INTO `v_userid`,`v_name`,`v_fieldid`,`v_value`,`v_submitted`;
 	IF `done` THEN
 		LEAVE cur_loop2;
 	END IF;
-
 	IF `v_userid`!=`v_prevuserid` THEN
-		SET `v_userid`=`v_prevuserid`;
 		IF `v_update_required`!=0 THEN
-			UPDATE `mdl_user` SET `timemodified`=`v_lastmodified` WHERE `id`=`v_userid`;
-			SET `v_update_required`=0;
+			UPDATE `mdl_user` SET `timemodified`=`v_lastmodified` WHERE `id`=`v_prevuserid`;
 		END IF;
-		SET `v_lastmodified`=(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`userid`);
+		SET `v_lastmodified`=(SELECT `timemodified` FROM `mdl_user` WHERE `id`=`v_userid`);
+		SET `v_prevuserid`=`v_userid`;
+		SET `v_update_required`=0;
 	END IF;
-
 	IF `v_submitted`>=`v_lastmodified` THEN
 		IF `v_fieldid`>0 THEN
 			INSERT INTO `mdl_user_info_data` (`userid`,`fieldid`,`data`)
-			SELECT `v_userid`,`v_fieldid`,`v_value` FROM `tmp_update` WHERE `type`=`name`
+			SELECT `v_userid`,`v_fieldid`,`v_value` FROM `tmp_update`
 				ON DUPLICATE KEY UPDATE `data`=`value`;
 			IF ROW_COUNT()=1 THEN
 				SET `v_update_required`=1;
@@ -169,6 +166,9 @@ cur_loop2: LOOP
 				WHERE `id`=`v_userid` AND `timemodified`<=`v_lastmodified` AND `institution`!=`v_value`;
 			SET `v_update_required`=0;
 		END IF;
+	END IF;
+	IF `v_update_required`!=0 THEN
+	    UPDATE `mdl_user` SET `timemodified`=`v_lastmodified` WHERE `id`=`v_prevuserid`;
 	END IF;
 END LOOP;
 DROP TABLE IF EXISTS `tmp_update`;
