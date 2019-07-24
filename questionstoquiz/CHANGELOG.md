@@ -23,3 +23,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Simplified UI making it easier to choose items.
 - Restricts quiz and category selection to course or course category context.
+
+## [1.1.1] - 2019-07-24
+### Added
+- Show category path to disambiguate development and live categories.

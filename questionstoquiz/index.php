@@ -105,8 +105,9 @@ where isnull(`s`.`id`) and `q`.`course`=@courseid
 order by `q`.`name`;";
 
 // Get all questionCategories (with quiz level pattern) for a specified course
-$questionCategoryQuery="SELECT `qc`.`id`,`qc`.`name` 
+$questionCategoryQuery="SELECT `qc`.`id`, CONCAT(`qcp`.`name`,'/',`qc`.`name`) `name`
 FROM `mdl_question_categories` `qc`
+JOIN `mdl_question_categories` `qcp` JOIN  ON `qc`.`parent`=`qcp`.`id`
 WHERE `qc`.`contextid` IN (SELECT `ctx`.`id` from `mdl_context` `ctx`
 join `mdl_course` `c` ON `c`.`id`=`ctx`.`instanceid`
 where `c`.`id`=@courseid and `ctx`.`contextlevel`=50

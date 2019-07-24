@@ -18,14 +18,14 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     tool_questionstoquiz
- * @copyright   2018 David Markwell SNOMED International
+ * @copyright   2019 David Markwell SNOMED International
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'tool_questionstoquiz';
-$plugin->version   = 2019070601;        // The current module version (Date: YYYYMMDDXX)
+$plugin->version   = 2019072300;        // The current module version (Date: YYYYMMDDXX)
 $plugin->requires  = 2017051200;
-$plugin->release   = '1.1.0';
+$plugin->release   = '1.1.1';
 $plugin->maturity  = MATURITY_STABLE;
