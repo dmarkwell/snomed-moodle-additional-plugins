@@ -107,7 +107,7 @@ order by `q`.`name`;";
 // Get all questionCategories (with quiz level pattern) for a specified course
 $questionCategoryQuery="SELECT `qc`.`id`, CONCAT(`qcp`.`name`,'/',`qc`.`name`) `name`
 FROM `mdl_question_categories` `qc`
-JOIN `mdl_question_categories` `qcp` JOIN  ON `qc`.`parent`=`qcp`.`id`
+JOIN `mdl_question_categories` `qcp`  ON `qc`.`parent`=`qcp`.`id`
 WHERE `qc`.`contextid` IN (SELECT `ctx`.`id` from `mdl_context` `ctx`
 join `mdl_course` `c` ON `c`.`id`=`ctx`.`instanceid`
 where `c`.`id`=@courseid and `ctx`.`contextlevel`=50
@@ -117,7 +117,6 @@ join `mdl_course_categories` `cc` ON `cc`.`id`=`ctx`.`instanceid`
 join `mdl_course` `c` ON `c`.`category`=`cc`.`id`
 where `c`.`id`=@courseid and `ctx`.`contextlevel`=40)
 AND BINARY `qc`.`name` regexp '^[A-Z][A-Z0-9]+[AEX]$';";
-
 
 echo $OUTPUT->header();
 

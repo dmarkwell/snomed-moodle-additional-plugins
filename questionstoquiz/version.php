@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'tool_questionstoquiz';
-$plugin->version   = 2019072300;        // The current module version (Date: YYYYMMDDXX)
+$plugin->version   = 2019072400;        // The current module version (Date: YYYYMMDDXX)
 $plugin->requires  = 2017051200;
 $plugin->release   = '1.1.1';
 $plugin->maturity  = MATURITY_STABLE;
